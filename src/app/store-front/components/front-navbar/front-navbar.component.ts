@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+
+import { AuthService } from '@auth/services/auth.service';
 
 @Component({
   selector: 'front-navbar',
@@ -8,4 +10,15 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './front-navbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FrontNavbarComponent {}
+export class FrontNavbarComponent {
+  private authService = inject(AuthService);
+
+  authSatuts = this.authService.authStatus;
+  user = this.authService.user;
+
+  isAdmin = this.authService.isAdmin;
+
+  logout() {
+    this.authService.logout();
+  }
+}

@@ -1,0 +1,110 @@
+<h2 class="text-xl text-accent font-montserrat text-center mb-2">
+  Registrarse
+</h2>
+
+<form autocomplete="off" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div class="flex flex-col gap-4">
+    <label class="form-control w-full max-w-xs">
+      <div class="label">
+        <span class="label-text text-slate-700">Nombre completo:</span>
+      </div>
+      <input
+        type="text"
+        formControlName="fullName"
+        class="input input-bordered w-full max-w-xs"
+      />
+      @if (formUtil.isValidField(registerForm,'fullName')) {
+      <div class="label">
+        <span class="label-text-alt text-red-500 text-sm">{{
+          formUtil.getFieldError(registerForm, "fullName")
+        }}</span>
+      </div>
+      }
+    </label>
+
+    <label class="form-control w-full max-w-xs">
+      <div class="label">
+        <span class="label-text text-slate-700">Correo electronico:</span>
+      </div>
+      <input
+        formControlName="email"
+        type="email"
+        class="input input-bordered w-full max-w-xs"
+      />
+      @if (formUtil.isValidField(registerForm,'email')) {
+      <div class="label">
+        <span class="label-text-alt text-red-500 text-sm">{{
+          formUtil.getFieldError(registerForm, "email")
+        }}</span>
+      </div>
+      }
+    </label>
+
+    <label class="form-control w-full max-w-xs">
+      <div class="label">
+        <span class="label-text text-slate-700">Contraseña:</span>
+      </div>
+      <input
+        formControlName="password"
+        type="password"
+        class="input input-bordered w-full max-w-xs"
+      />
+      @if (formUtil.isValidField(registerForm,'password')) {
+      <div class="label">
+        <span class="label-text-alt text-red-500 text-sm">{{
+          formUtil.getFieldError(registerForm, "password")
+        }}</span>
+      </div>
+      }
+    </label>
+
+    <button type="submit" class="btn btn-secondary">Registrar</button>
+  </div>
+</form>
+
+@if (hasError()) {
+<div
+  role="alert"
+  class="alert alert-error animate-fadeIn fixed bottom-5 left-1/2 -translate-x-1/2 w-full max-w-xs"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-6 w-6 shrink-0 stroke-current"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+  <span>{{ errorMessage() }}</span>
+</div>
+}
+
+<!-- Success -->
+@if (hasSuccess()) {
+
+<div
+  role="alert"
+  class="alert alert-success animate-fadeIn fixed bottom-5 left-1/2 -translate-x-1/2 w-full max-w-xs"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-6 w-6 shrink-0 stroke-current"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+  <span>Usuario registrado correctamente.</span>
+</div>
+
+}

@@ -5,3 +5,5 @@ export interface User {
   isActive: boolean;
   roles: string[];
 }
+
+export type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';

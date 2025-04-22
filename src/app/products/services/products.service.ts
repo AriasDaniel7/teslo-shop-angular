@@ -6,6 +6,7 @@ import {
   Product,
   ProductsResponse,
 } from '@products/interfaces/product.interface';
+
 import { of, tap } from 'rxjs';
 
 const baseUrl = environment.BASE_URL;
@@ -21,6 +22,7 @@ interface Options {
 })
 export class ProductsService {
   private http = inject(HttpClient);
+
   private productsCache = new Map<string, ProductsResponse>();
   private productCache = new Map<string, Product>();
 
@@ -52,5 +54,34 @@ export class ProductsService {
     return this.http
       .get<Product>(`${baseUrl}/products/${idSlug}`)
       .pipe(tap((resp) => this.productCache.set(idSlug, resp)));
+  }
+
+  getProductById(id: string) {
+    if (this.productCache.has(id)) {
+      return of(this.productCache.get(id));
+    }
+
+    return this.http
+      .get<Product>(`${baseUrl}/products/${id}`)
+      .pipe(tap((resp) => this.productCache.set(id, resp)));
+  }
+
+  updateProduct(id: string, productLike: Partial<Product>) {
+    return this.http
+      .patch<Product>(`${baseUrl}/products/${id}`, productLike)
+      .pipe(tap((product) => this.updateProductCache(product)));
+  }
+
+  updateProductCache(product: Product) {
+    const productId = product.id;
+
+    this.productCache.set(productId, product);
+
+    this.productsCache.forEach((productResponse) => {
+      productResponse.products = productResponse.products.map(
+        (currentProduct) =>
+          currentProduct.id === productId ? product : currentProduct
+      );
+    });
   }
 }
